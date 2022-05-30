@@ -32,23 +32,21 @@ exports.uploadImage = (imageFile) => {
 
   return (req, res, next) => {
     upload(req, res, function (err) {
-      if (req.fileValidationError) {
+      if (req.fileValidationError)
         return res.status(200).send(req.fileValidationError);
-      }
 
-      if (!req.file && !err) {
+      if (!req.file && !err)
         return res.status(200).send({
-          message: "Please select file to upload",
+          message: "Please select files to upload",
         });
-      }
 
       if (err) {
-        if (err.code == "LIMIT_FILE_SIZE") {
-          return res.status(400).send({
-            message: "Max file size 100 KB",
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(200).send({
+            message: "Max file sized 10KB",
           });
         }
-        return res.status(400).send(err);
+        return res.status(200).send(err);
       }
 
       return next();
