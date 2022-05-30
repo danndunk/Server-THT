@@ -1,11 +1,19 @@
 const { tb_products } = require("../../models");
 
+const cloudinary = require("../utils/cloudinary");
+
 exports.addProduct = async (req, res) => {
   try {
     const { namaBarang, hargaBeli, hargaJual, stok } = req.body;
 
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "tht-nutech",
+      use_filename: true,
+      unique_filename: true,
+    });
+
     const newProduct = await tb_products.create({
-      image: req.file.filename,
+      image: result.public_id,
       namaBarang,
       hargaBeli,
       hargaJual,
